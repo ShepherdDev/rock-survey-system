@@ -24,6 +24,8 @@
                         <Columns>
                             <Rock:RockBoundField DataField="CreatedByPersonAlias.Person.FullName" HeaderText="Completed By" SortExpression="CreatedByPersonAlias.Person.FullName" />
                             <Rock:DateField DataField="CreatedDateTime" HeaderText="Completed Date" SortExpression="CreatedDateTime" />
+                            <Rock:BoolField DataField="DidPass" HeaderText="Did Pass" SortExpression="DidPass" />
+                            <Rock:DateField DataField="TestResult" HeaderText="Score" SortExpression="TestResult" DataFormatString="{0}%" />
                         </Columns>
                     </Rock:Grid>
                 </div>

@@ -100,6 +100,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 }
 
                 ViewState["CanDelete"] = survey.IsAuthorized( Authorization.EDIT, CurrentPerson );
+                gList.Columns[2].Visible = survey.PassingGrade.HasValue;
+                gList.Columns[3].Visible = survey.PassingGrade.HasValue;
 
                 SetFilter();
                 BindGrid();
