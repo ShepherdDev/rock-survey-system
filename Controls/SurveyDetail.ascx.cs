@@ -680,6 +680,17 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         }
 
         /// <summary>
+        /// Handles the Click event of the lbrun control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void lbRun_Click( object sender, EventArgs e )
+        {
+            NavigateToPage( com.shepherdchurch.SurveySystem.SystemGuid.Page.SURVEY_ENTRY.AsGuid(),
+                new Dictionary<string, string> { { "SurveyId", hfId.Value } } );
+        }
+
+        /// <summary>
         /// Handles the Click event of the lbResults control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
