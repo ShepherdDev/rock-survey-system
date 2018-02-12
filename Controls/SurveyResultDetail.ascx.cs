@@ -156,6 +156,9 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             lbDelete.Visible = _canDelete;
         }
 
+        /// <summary>
+        /// Bind the grid to the result set we have.
+        /// </summary>
         protected void BindGrid()
         {
             var rockContext = new RockContext();
@@ -174,7 +177,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     Value = a.FieldType.Field.FormatValueAsHtml( gAttributes, result.GetAttributeValue( a.Key ), a.QualifierValues, true ),
                     Answer = answers.ContainsKey( a.Key ) ? a.FieldType.Field.FormatValueAsHtml( gAttributes, answers[a.Key], a.QualifierValues, true ) : string.Empty,
                     IsCorrect = ( answers.ContainsKey( a.Key ) ? answers[a.Key] == result.GetAttributeValue( a.Key ) : false ) ? "<i class='text-success fa fa-check'></i>" : "<i class='text-danger fa fa-times'></i>",
-                    Order = a.Order
+                    a.Order
                 } )
                 .OrderBy( a => a.Order )
                 .ThenBy( a => a.Key )
@@ -225,6 +228,20 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             {
                 ShowDetail( PageParameter( "SurveyResultId" ).AsInteger() );
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void lbDone_Click( object sender, EventArgs e )
+        {
+            var rockContext = new RockContext();
+
+            var result = new SurveyResultService( rockContext ).Get( PageParameter( "SurveyResultId" ).AsInteger() );
+
+            NavigateToParentPage( new Dictionary<string, string> { { "SurveyId", result.SurveyId.ToString() } } );
         }
 
         #endregion

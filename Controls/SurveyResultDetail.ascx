@@ -48,6 +48,7 @@
                 </Rock:Grid>
 
                 <div class="actions">
+                    <asp:LinkButton ID="lbDone" runat="server" CssClass="btn btn-primary" Text="Done" OnClick="lbDone_Click" />
                     <asp:LinkButton ID="lbDelete" runat="server" CssClass="btn btn-link" Text="Delete" OnClick="lbDelete_Click" OnClientClick="return Rock.dialogs.confirmDelete(event, 'survey result');" />
                 </div>
             </div>
