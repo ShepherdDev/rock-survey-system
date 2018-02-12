@@ -243,6 +243,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             bool canEdit = ( UserCanEdit || UserCanAdministrate ) && survey.IsAuthorized( Authorization.VIEW, CurrentPerson );
             lbEdit.Visible = canEdit;
             lbDelete.Visible = canEdit;
+            lbEditAnswers.Visible = survey.PassingGrade.HasValue;
             btnSecurity.Visible = survey.IsAuthorized( Authorization.ADMINISTRATE, CurrentPerson );
 
             btnSecurity.Title = "Secure " + survey.Name;
