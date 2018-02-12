@@ -58,6 +58,8 @@
     <Compile Include="Migrations\002_SetupPages.cs" />
     <Compile Include="Migrations\003_AddIsActive.cs" />
     <Compile Include="Migrations\004_MoveSurveyEntryPage.cs" />
+    <Compile Include="Migrations\005_AddSurveyEntryRoute.cs" />
+    <Compile Include="Migrations\006_MoveSurveyResultDetail.cs" />
     <Compile Include="Model\Survey.cs" />
     <Compile Include="Model\SurveyResult.cs" />
     <Compile Include="Model\SurveyResultService.cs" />
