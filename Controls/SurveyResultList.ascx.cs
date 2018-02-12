@@ -166,7 +166,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 var attributeValueService = new AttributeValueService( rockContext );
                 var parameterExpression = attributeValueService.ParameterExpression;
 
-                foreach ( var attribute in AvailableAttributes )
+                foreach ( var attribute in AvailableAttributes.Where( a => a.IsGridColumn ) )
                 {
                     var filterControl = phAttributeFilters.FindControl( "filter_" + attribute.Id.ToString() );
                     if ( filterControl != null )
@@ -196,11 +196,11 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 
             var resultList = qryList.Select( r => new
             {
-                Id = r.Id,
-                CreatedByPersonAlias = r.CreatedByPersonAlias,
-                CreatedDateTime = r.CreatedDateTime,
-                DidPass = r.DidPass,
-                TestResult = r.TestResult
+                r.Id,
+                r.CreatedByPersonAlias,
+                r.CreatedDateTime,
+                r.DidPass,
+                r.TestResult
             } );
 
             if ( sortProperty != null )
@@ -231,35 +231,38 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             {
                 foreach ( var attribute in AvailableAttributes )
                 {
-                    var control = attribute.FieldType.Field.FilterControl( attribute.QualifierValues, "filter_" + attribute.Id.ToString(), false, Rock.Reporting.FilterMode.SimpleFilter );
-                    if ( control != null )
+                    if ( attribute.IsGridColumn )
                     {
-                        if ( control is IRockControl )
+                        var control = attribute.FieldType.Field.FilterControl( attribute.QualifierValues, "filter_" + attribute.Id.ToString(), false, Rock.Reporting.FilterMode.SimpleFilter );
+                        if ( control != null )
                         {
-                            var rockControl = ( IRockControl ) control;
-                            rockControl.Label = attribute.Name;
-                            rockControl.Help = attribute.Description;
-                            phAttributeFilters.Controls.Add( control );
+                            if ( control is IRockControl )
+                            {
+                                var rockControl = ( IRockControl ) control;
+                                rockControl.Label = attribute.Name;
+                                rockControl.Help = attribute.Description;
+                                phAttributeFilters.Controls.Add( control );
+                            }
+                            else
+                            {
+                                var wrapper = new RockControlWrapper();
+                                wrapper.ID = control.ID + "_wrapper";
+                                wrapper.Label = attribute.Name;
+                                wrapper.Controls.Add( control );
+                                phAttributeFilters.Controls.Add( wrapper );
+                            }
                         }
-                        else
-                        {
-                            var wrapper = new RockControlWrapper();
-                            wrapper.ID = control.ID + "_wrapper";
-                            wrapper.Label = attribute.Name;
-                            wrapper.Controls.Add( control );
-                            phAttributeFilters.Controls.Add( wrapper );
-                        }
-                    }
 
-                    string savedValue = gfList.GetUserPreference( MakeKeyUniqueToType( attribute.Key ) );
-                    if ( !string.IsNullOrWhiteSpace( savedValue ) )
-                    {
-                        try
+                        string savedValue = gfList.GetUserPreference( MakeKeyUniqueToType( attribute.Key ) );
+                        if ( !string.IsNullOrWhiteSpace( savedValue ) )
                         {
-                            var values = JsonConvert.DeserializeObject<List<string>>( savedValue );
-                            attribute.FieldType.Field.SetFilterValues( control, attribute.QualifierValues, values );
+                            try
+                            {
+                                var values = JsonConvert.DeserializeObject<List<string>>( savedValue );
+                                attribute.FieldType.Field.SetFilterValues( control, attribute.QualifierValues, values );
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
 
                     string dataFieldExpression = attribute.Key;
@@ -271,6 +274,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                         boundField.AttributeId = attribute.Id;
                         boundField.HeaderText = attribute.Name;
                         boundField.Condensed = false;
+                        boundField.Visible = attribute.IsGridColumn;
 
                         var attributeCache = Rock.Web.Cache.AttributeCache.Read( attribute.Id );
                         if ( attributeCache != null )
@@ -315,24 +319,24 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         {
             AvailableAttributes = new List<AttributeCache>();
 
-                int entityTypeId = new SurveyResult().TypeId;
-                string typeQualifier = PageParameter( "SurveyId" );
+            int entityTypeId = new SurveyResult().TypeId;
+            string typeQualifier = PageParameter( "SurveyId" );
 
-                //
-                // Make a list of all attributes that are defined for this entity.
-                //
-                foreach ( var attributeModel in new AttributeService( new RockContext() ).Queryable()
-                    .Where( a =>
-                        a.EntityTypeId == entityTypeId &&
-                        a.IsGridColumn &&
-                        a.EntityTypeQualifierColumn.Equals( "SurveyId", StringComparison.OrdinalIgnoreCase ) &&
-                        a.EntityTypeQualifierValue.Equals( typeQualifier ) )
-                    .OrderByDescending( a => a.EntityTypeQualifierColumn )
-                    .ThenBy( a => a.Order )
-                    .ThenBy( a => a.Name ) )
-                {
-                    AvailableAttributes.Add( AttributeCache.Read( attributeModel ) );
-                }
+            //
+            // Make a list of all attributes that are defined for this entity.
+            //
+            foreach ( var attributeModel in new AttributeService( new RockContext() ).Queryable()
+                .Where( a =>
+                    a.EntityTypeId == entityTypeId &&
+                    //a.IsGridColumn &&
+                    a.EntityTypeQualifierColumn.Equals( "SurveyId", StringComparison.OrdinalIgnoreCase ) &&
+                    a.EntityTypeQualifierValue.Equals( typeQualifier ) )
+                .OrderByDescending( a => a.EntityTypeQualifierColumn )
+                .ThenBy( a => a.Order )
+                .ThenBy( a => a.Name ) )
+            {
+                AvailableAttributes.Add( AttributeCache.Read( attributeModel ) );
+            }
         }
 
         /// <summary>
