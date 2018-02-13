@@ -73,6 +73,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <Rock:DataTextBox ID="tbName" runat="server" SourceTypeName="com.shepherdchurch.SurveySystem.Model.Survey, com.shepherdchurch.SurveySystem" PropertyName="Name" />
+                            <Rock:RockCheckBox ID="cbIsLoginRequired" runat="server" Label="Is Login Required" Help="Turn on to require a person to be logged in to take the survey." />
                         </div>
 
                         <div class="col-md-6">

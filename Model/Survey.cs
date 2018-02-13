@@ -88,6 +88,12 @@ namespace com.shepherdchurch.SurveySystem.Model
         [DataMember]
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// If true then a user will be required to login to take the survey.
+        /// </summary>
+        [DataMember]
+        public bool IsLoginRequired { get; set; }
+
         #endregion
 
         #region Virtual Properties

@@ -84,6 +84,25 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 return;
             }
 
+            //
+            // Check if an active login is required for this survey.
+            //
+            if ( survey.IsLoginRequired && CurrentUser == null )
+            {
+                var site = RockPage.Site;
+
+                if ( site.LoginPageId.HasValue )
+                {
+                    site.RedirectToLoginPage( true );
+                }
+                else
+                {
+                    System.Web.Security.FormsAuthentication.RedirectToLoginPage();
+                }
+
+                return;
+            }
+
             pnlDetails.Visible = true;
 
             //

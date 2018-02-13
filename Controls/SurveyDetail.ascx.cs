@@ -285,6 +285,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             tbName.Text = survey.Name;
             tbDescription.Text = survey.Description;
             cbIsActive.Checked = survey.IsActive;
+            cbIsLoginRequired.Checked = survey.IsLoginRequired;
             cpCategory.SetValue( survey.CategoryId );
             cbRecordAnswers.Checked = survey.RecordAnswers;
             ddlLastAttemptDateAttribute.SetValue( survey.LastAttemptDateAttributeId );
@@ -378,6 +379,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             survey.Name = tbName.Text;
             survey.Description = tbDescription.Text;
             survey.IsActive = cbIsActive.Checked;
+            survey.IsLoginRequired = cbIsLoginRequired.Checked;
             survey.CategoryId = cpCategory.SelectedValueAsId();
             survey.RecordAnswers = cbRecordAnswers.Checked;
             survey.LastAttemptDateAttributeId = ddlLastAttemptDateAttribute.SelectedValueAsInt();
