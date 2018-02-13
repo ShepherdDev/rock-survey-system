@@ -7,7 +7,7 @@
 
         <asp:Panel ID="pnlResultList" runat="server" CssClass="panel panel-block">
             <div class="panel-heading">
-                <h1 class="panel-title"><i class="fa fa-list-ul"></i> Result List</h1>
+                <h1 class="panel-title"><i class="fa fa-list-ul"></i> <asp:Literal ID="ltTitle" runat="server" /></h1>
             </div>
 
             <div class="panel-body">

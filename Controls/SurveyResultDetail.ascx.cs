@@ -122,7 +122,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             //
             // Set the panel title.
             //
-            lTitle.Text = result.Survey.Name + " result";
+            lTitle.Text = result.Survey.Name + " Result";
 
             //
             // Set all the simple field values.

@@ -99,6 +99,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     return;
                 }
 
+                ltTitle.Text = string.Format( "{0} Results", survey.Name );
+
                 ViewState["CanDelete"] = survey.IsAuthorized( Authorization.EDIT, CurrentPerson );
                 gList.Columns[2].Visible = survey.PassingGrade.HasValue;
                 gList.Columns[3].Visible = survey.PassingGrade.HasValue;
