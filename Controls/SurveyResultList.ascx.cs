@@ -277,7 +277,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                         boundField.DataField = dataFieldExpression;
                         boundField.AttributeId = attribute.Id;
                         boundField.HeaderText = attribute.Name;
-                        boundField.Condensed = false;
+                        boundField.Condensed = true;
                         boundField.Visible = attribute.IsGridColumn;
 
                         var attributeCache = Rock.Web.Cache.AttributeCache.Read( attribute.Id );

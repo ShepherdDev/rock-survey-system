@@ -174,8 +174,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 .Select( a => new
                 {
                     Key = a.Name,
-                    Value = a.FieldType.Field.FormatValueAsHtml( gAttributes, result.GetAttributeValue( a.Key ), a.QualifierValues, true ),
-                    Answer = answers.ContainsKey( a.Key ) ? a.FieldType.Field.FormatValueAsHtml( gAttributes, answers[a.Key], a.QualifierValues, true ) : string.Empty,
+                    Value = a.FieldType.Field.FormatValueAsHtml( gAttributes, result.GetAttributeValue( a.Key ), a.QualifierValues, false ),
+                    Answer = answers.ContainsKey( a.Key ) ? a.FieldType.Field.FormatValueAsHtml( gAttributes, answers[a.Key], a.QualifierValues, false ) : string.Empty,
                     IsCorrect = ( answers.ContainsKey( a.Key ) ? answers[a.Key] == result.GetAttributeValue( a.Key ) : false ) ? "<i class='text-success fa fa-check'></i>" : "<i class='text-danger fa fa-times'></i>",
                     a.Order
                 } )
