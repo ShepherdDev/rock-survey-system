@@ -32,9 +32,9 @@
                         <asp:LinkButton ID="lbDelete" runat="server" Text="Delete" CssClass="btn btn-link" OnClick="lbDelete_Click" />
 
                         <span class="pull-right">
-                            <asp:LinkButton ID="lbRun" runat="server" ToolTip="Take Survey" CssClass="btn btn-sm btn-default fa fa-play" OnClick="lbRun_Click" />
-                            <asp:LinkButton ID="lbCopy" runat="server" ToolTip="Copy Survey" CssClass="btn btn-sm btn-default fa fa-clone" OnClick="btnCopy_Click" />
-                            <asp:LinkButton ID="lbResults" runat="server" ToolTip="View Results" CssClass="btn btn-sm btn-default fa fa-list" OnClick="lbResults_Click" />
+                            <asp:LinkButton ID="lbRun" runat="server" ToolTip="Take Survey" CssClass="btn btn-sm btn-default" OnClick="lbRun_Click"><i class="fa fa-play"></i></asp:LinkButton>
+                            <asp:LinkButton ID="lbCopy" runat="server" ToolTip="Copy Survey" CssClass="btn btn-sm btn-default" OnClick="btnCopy_Click"><i class="fa fa-clone"></i></asp:LinkButton>
+                            <asp:LinkButton ID="lbResults" runat="server" ToolTip="View Results" CssClass="btn btn-sm btn-default" OnClick="lbResults_Click"><i class="fa fa-list"></i></asp:LinkButton>
                             <Rock:SecurityButton ID="btnSecurity" runat="server" class="btn btn-sm btn-security" />
                         </span>
                     </div>
