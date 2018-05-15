@@ -5,12 +5,14 @@ using System.Linq;
 
 using Newtonsoft.Json;
 using Rock;
+using Rock.Attribute;
 using Rock.Data;
 using Rock.Lava;
 using Rock.Model;
 using Rock.Security;
 using Rock.Web.Cache;
 using Rock.Web.UI;
+using Rock.Web.UI.Controls;
 
 using com.shepherdchurch.SurveySystem.Model;
 
@@ -19,6 +21,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
     [DisplayName( "Survey Entry" )]
     [Category( "Shepherd Church > Survey System" )]
     [Description( "Displays a survey for the user to enter results into." )]
+    [BooleanField( "Set Page Title", "If Yes then the page title is updated to reflect the Survey being taken.", true, order: 0 )]
+    [TextField( "Page Title Template", "If Set Page Title is enabled, then this field is used to set the page title. If blank the Survey name is used. <span class='tip tip-lava'></span>", false, order: 1 )]
     public partial class SurveyEntry : RockBlock
     {
         #region Base Method Overrides
@@ -124,7 +128,32 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 
             surveyResult.LoadAttributes( rockContext );
 
+            phAttributes.Controls.Clear();
             Rock.Attribute.Helper.AddEditControls( surveyResult, phAttributes, true, BlockValidationGroup );
+
+            //
+            // Update the Page Title if requested.
+            //
+            if ( GetAttributeValue( "SetPageTitle" ).AsBoolean( true ) )
+            {
+                string pageTitle;
+
+                if ( string.IsNullOrWhiteSpace( GetAttributeValue( "PageTitleTemplate" ) ) )
+                {
+                    pageTitle = survey.Name;
+                }
+                else
+                {
+                    var mergeFields = LavaHelper.GetCommonMergeFields( RockPage );
+                    mergeFields.Add( "Survey", survey );
+
+                    pageTitle = GetAttributeValue( "PageTitleTemplate" ).ResolveMergeFields( mergeFields );
+                }
+
+                RockPage.PageTitle = pageTitle;
+                RockPage.BrowserTitle = String.Format( "{0} | {1}", pageTitle, RockPage.Site.Name );
+                RockPage.Header.Title = String.Format( "{0} | {1}", pageTitle, RockPage.Site.Name );
+            }
         }
 
         #endregion
