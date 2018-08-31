@@ -60,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\SurveyFieldAttribute.cs" />
+    <Compile Include="Field\SurveyFieldType.cs" />
     <Compile Include="Migrations\001_InstallSystemData.cs" />
     <Compile Include="Migrations\002_SetupPages.cs" />
     <Compile Include="Migrations\003_AddIsActive.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Migrations\005_AddSurveyEntryRoute.cs" />
     <Compile Include="Migrations\006_MoveSurveyResultDetail.cs" />
     <Compile Include="Migrations\007_AddIsLoginRequired.cs" />
+    <Compile Include="Migrations\008_AddSurveyAttributeField.cs" />
     <Compile Include="Model\Survey.cs" />
     <Compile Include="Model\SurveyResult.cs" />
     <Compile Include="Model\SurveyResultService.cs" />
@@ -77,8 +80,10 @@
     <Compile Include="SystemGuid\Block.cs" />
     <Compile Include="SystemGuid\BlockType.cs" />
     <Compile Include="SystemGuid\EntityType.cs" />
+    <Compile Include="SystemGuid\FieldType.cs" />
     <Compile Include="SystemGuid\Layout.cs" />
     <Compile Include="SystemGuid\Page.cs" />
+    <Compile Include="UI\SurveyPicker.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
