@@ -198,22 +198,13 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             gList.ObjectList = new Dictionary<string, object>();
             qryList.ForEach( q => gList.ObjectList.Add( q.Id.ToString(), q ) );
 
-            var resultList = qryList.Select( r => new
-            {
-                r.Id,
-                r.CreatedByPersonAlias,
-                r.CreatedDateTime,
-                r.DidPass,
-                r.TestResult
-            } );
-
             if ( sortProperty != null )
             {
-                gList.DataSource = resultList.AsQueryable().Sort( sortProperty ).ToList();
+                gList.DataSource = qryList.AsQueryable().Sort( sortProperty ).ToList();
             }
             else
             {
-                gList.DataSource = resultList.OrderByDescending( r => r.Id ).ToList();
+                gList.DataSource = qryList.OrderByDescending( r => r.Id ).ToList();
             }
 
             gList.EntityTypeId = EntityTypeCache.Read<SurveyResult>().Id;
