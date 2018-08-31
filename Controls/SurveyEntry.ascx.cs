@@ -14,6 +14,7 @@ using Rock.Web.Cache;
 using Rock.Web.UI;
 using Rock.Web.UI.Controls;
 
+using com.shepherdchurch.SurveySystem.Attribute;
 using com.shepherdchurch.SurveySystem.Model;
 
 namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
@@ -23,6 +24,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
     [Description( "Displays a survey for the user to enter results into." )]
     [BooleanField( "Set Page Title", "If Yes then the page title is updated to reflect the Survey being taken.", true, order: 0 )]
     [TextField( "Page Title Template", "If Set Page Title is enabled, then this field is used to set the page title. If blank the Survey name is used. <span class='tip tip-lava'></span>", false, order: 1 )]
+    [SurveyField( "Default Survey", "If set and no survey is specified in the URL then this survey will be used.", false, "", order: 2 )]
     public partial class SurveyEntry : RockBlock
     {
         #region Base Method Overrides
@@ -49,7 +51,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         {
             if ( !IsPostBack )
             {
-                ShowDetail( PageParameter( "SurveyId" ).AsInteger() );
+                ShowDetail();
             }
             else
             {
@@ -67,6 +69,27 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         #endregion
 
         #region Core Methods
+
+        /// <summary>
+        /// Shows the details of the specified or default survey.
+        /// </summary>
+        protected void ShowDetail()
+        {
+            int? surveyId = PageParameter( "SurveyId" ).AsIntegerOrNull();
+
+            if ( !surveyId.HasValue )
+            {
+                var guid = GetAttributeValue( "DefaultSurvey" ).AsGuidOrNull();
+                var survey = new SurveyService( new RockContext() ).Get( guid ?? Guid.Empty );
+
+                if ( survey != null )
+                {
+                    surveyId = survey.Id;
+                }
+            }
+
+            ShowDetail( surveyId ?? 0 );
+        }
 
         /// <summary>
         /// Show the details of the given survey for the user to enter information into.
@@ -87,6 +110,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 
                 return;
             }
+
+            nbUnauthorized.Text = string.Empty;
 
             //
             // Check if an active login is required for this survey.
@@ -167,12 +192,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Block_BlockUpdated( object sender, EventArgs e )
         {
-            int surveyId = PageParameter( "SurveyId" ).AsInteger();
-
-            if ( surveyId != 0 )
-            {
-                ShowDetail( surveyId );
-            }
+            ShowDetail();
         }
 
         /// <summary>
