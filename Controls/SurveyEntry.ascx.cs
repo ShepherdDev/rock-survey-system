@@ -57,7 +57,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             {
                 if ( pnlDetails.Visible )
                 {
-                    var surveyResult = new SurveyResult { Id = 0, SurveyId = PageParameter( "SurveyId" ).AsInteger() };
+                    var surveyResult = new SurveyResult { Id = 0, SurveyId = GetSurveyId().Value };
 
                     surveyResult.LoadAttributes();
 
@@ -71,9 +71,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         #region Core Methods
 
         /// <summary>
-        /// Shows the details of the specified or default survey.
+        /// Gets the survey identifier.
         /// </summary>
-        protected void ShowDetail()
+        /// <returns></returns>
+        protected int? GetSurveyId()
         {
             int? surveyId = PageParameter( "SurveyId" ).AsIntegerOrNull();
 
@@ -87,6 +88,16 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     surveyId = survey.Id;
                 }
             }
+
+            return surveyId;
+        }
+
+        /// <summary>
+        /// Shows the details of the specified or default survey.
+        /// </summary>
+        protected void ShowDetail()
+        {
+            int? surveyId = GetSurveyId();
 
             ShowDetail( surveyId ?? 0 );
         }
@@ -203,7 +214,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         protected void btnSubmit_Click( object sender, EventArgs e )
         {
             var rockContext = new RockContext();
-            var survey = new SurveyService( rockContext ).Get( PageParameter( "SurveyId" ).AsInteger() );
+            var survey = new SurveyService( rockContext ).Get( GetSurveyId().Value );
             var surveyResultService = new SurveyResultService( rockContext );
             var surveyResult = new SurveyResult { Id = 0, SurveyId = survey.Id };
             var mergeFields = LavaHelper.GetCommonMergeFields( RockPage, CurrentPerson );
