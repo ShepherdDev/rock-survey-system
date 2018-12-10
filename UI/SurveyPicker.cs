@@ -21,7 +21,7 @@ namespace com.shepherdchurch.SurveySystem.UI
         protected override void OnInit( EventArgs e )
         {
             ItemRestUrlExtraParams = "?getCategorizedItems=true&showUnnamedEntityItems=false&showCategoriesThatHaveNoChildren=false";
-            ItemRestUrlExtraParams += "&entityTypeId=" + EntityTypeCache.Read( SystemGuid.EntityType.SURVEY.AsGuid() ).Id;
+            ItemRestUrlExtraParams += "&entityTypeId=" + EntityTypeCache.Get( SystemGuid.EntityType.SURVEY.AsGuid() ).Id;
             this.IconCssClass = "fa fa-question-circle-o";
             base.OnInit( e );
         }

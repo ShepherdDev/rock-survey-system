@@ -291,7 +291,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 //
                 if ( surveyResult.DidPass.Value && survey.LastPassedDateAttributeId.HasValue && person != null )
                 {
-                    var attribute = AttributeCache.Read( survey.LastPassedDateAttributeId.Value );
+                    var attribute = AttributeCache.Get( survey.LastPassedDateAttributeId.Value );
 
                     if ( attribute != null )
                     {
@@ -307,7 +307,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             //
             if ( survey.LastAttemptDateAttributeId.HasValue && person != null )
             {
-                var attribute = AttributeCache.Read( survey.LastAttemptDateAttributeId.Value );
+                var attribute = AttributeCache.Get( survey.LastAttemptDateAttributeId.Value );
 
                 if ( attribute != null )
                 {

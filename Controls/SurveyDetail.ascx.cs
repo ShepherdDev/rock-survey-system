@@ -100,7 +100,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 }
             }
 
-            btnSecurity.EntityTypeId = EntityTypeCache.Read( typeof( Survey ) ).Id;
+            btnSecurity.EntityTypeId = EntityTypeCache.Get( typeof( Survey ) ).Id;
 
             // this event gets fired after block settings are updated. it's nice to repaint the screen if these settings would alter it
             this.BlockUpdated += Block_BlockUpdated;
@@ -328,7 +328,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             var selectedAttributeGuids = attributes.Select( a => a.Guid );
             foreach ( var attr in existingAttributes.Where( a => !selectedAttributeGuids.Contains( a.Guid ) ) )
             {
-                Rock.Web.Cache.AttributeCache.Flush( attr.Id );
+                Rock.Web.Cache.AttributeCache.Remove( attr.Id );
                 attributeService.Delete( attr );
             }
 
@@ -340,7 +340,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 Rock.Attribute.Helper.SaveAttributeEdits( attr, entityTypeId, qualifierColumn, qualifierValue, rockContext );
             }
 
-            AttributeCache.FlushEntityAttributes();
+            AttributeCache.RemoveEntityAttributes();
         }
 
         #endregion
@@ -405,7 +405,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 survey = surveyService.Get( survey.Guid );
 
                 // Save the Survey Attributes
-                int entityTypeId = EntityTypeCache.Read( typeof( SurveyResult ) ).Id;
+                int entityTypeId = EntityTypeCache.Get( typeof( SurveyResult ) ).Id;
                 SaveAttributes( survey.Id, entityTypeId, SurveyAttributesState, rockContext );
             } );
 
@@ -584,9 +584,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void lbAnswersSave_Click( object sender, EventArgs e )
         {
-            var surveyResult = new SurveyResult();
-
-            surveyResult.SurveyId = hfId.Value.AsInteger();
+            var surveyResult = new SurveyResult
+            {
+                SurveyId = hfId.Value.AsInteger()
+            };
             surveyResult.LoadAttributes();
 
             Helper.GetEditValues( phAnswerAttributes, surveyResult );
@@ -739,7 +740,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             {
                 attribute = new Rock.Model.Attribute
                 {
-                    FieldTypeId = FieldTypeCache.Read( Rock.SystemGuid.FieldType.TEXT ).Id
+                    FieldTypeId = FieldTypeCache.Get( Rock.SystemGuid.FieldType.TEXT ).Id
                 };
                 edtSurveyAttributes.ActionTitle = ActionTitle.Add( tbName.Text + " Survey Question" );
 

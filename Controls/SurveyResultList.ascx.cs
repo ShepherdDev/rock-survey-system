@@ -218,7 +218,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 gList.DataSource = qryList.OrderByDescending( r => r.Id ).ToList();
             }
 
-            gList.EntityTypeId = EntityTypeCache.Read<SurveyResult>().Id;
+            gList.EntityTypeId = EntityTypeCache.Get<SurveyResult>().Id;
             gList.DataBind();
         }
 
@@ -251,9 +251,11 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                             }
                             else
                             {
-                                var wrapper = new RockControlWrapper();
-                                wrapper.ID = control.ID + "_wrapper";
-                                wrapper.Label = attribute.Name;
+                                var wrapper = new RockControlWrapper
+                                {
+                                    ID = control.ID + "_wrapper",
+                                    Label = attribute.Name
+                                };
                                 wrapper.Controls.Add( control );
                                 phAttributeFilters.Controls.Add( wrapper );
                             }
@@ -275,14 +277,16 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     bool columnExists = gList.Columns.OfType<AttributeField>().FirstOrDefault( a => a.DataField.Equals( dataFieldExpression ) ) != null;
                     if ( !columnExists )
                     {
-                        AttributeField boundField = new AttributeField();
-                        boundField.DataField = dataFieldExpression;
-                        boundField.AttributeId = attribute.Id;
-                        boundField.HeaderText = attribute.Name;
-                        boundField.Condensed = true;
-                        boundField.Visible = attribute.IsGridColumn;
+                        AttributeField boundField = new AttributeField
+                        {
+                            DataField = dataFieldExpression,
+                            AttributeId = attribute.Id,
+                            HeaderText = attribute.Name,
+                            Condensed = true,
+                            Visible = attribute.IsGridColumn
+                        };
 
-                        var attributeCache = Rock.Web.Cache.AttributeCache.Read( attribute.Id );
+                        var attributeCache = Rock.Web.Cache.AttributeCache.Get( attribute.Id );
                         if ( attributeCache != null )
                         {
                             boundField.ItemStyle.HorizontalAlign = attributeCache.FieldType.Field.AlignValue;
@@ -341,7 +345,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 .ThenBy( a => a.Order )
                 .ThenBy( a => a.Name ) )
             {
-                AvailableAttributes.Add( AttributeCache.Read( attributeModel ) );
+                AvailableAttributes.Add( AttributeCache.Get( attributeModel ) );
             }
         }
 
