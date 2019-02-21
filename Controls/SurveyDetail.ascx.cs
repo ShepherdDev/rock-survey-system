@@ -765,7 +765,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         /// <param name="e">The <see cref="GridReorderEventArgs"/> instance containing the event data.</param>
         protected void gSurveyAttributes_GridReorder( object sender, GridReorderEventArgs e )
         {
-            var movedAttribute = SurveyAttributesState.Where( a => a.Order == e.OldIndex ).FirstOrDefault();
+            var movedAttribute = SurveyAttributesState.OrderBy( a => a.Order )
+                .ThenBy( a => a.Name )
+                .Skip( e.OldIndex )
+                .FirstOrDefault();
             if ( movedAttribute != null )
             {
                 if ( e.NewIndex < e.OldIndex )
