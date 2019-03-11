@@ -300,8 +300,6 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 }
             }
 
-            lResults.Text = survey.ResultTemplate.ResolveMergeFields( mergeFields );
-
             //
             // If we supposed to record the last attempt date, do so.
             //
@@ -335,6 +333,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 }
             } );
 
+            //
+            // Fire and run the workflow before we merge the results Lava so that
+            // the workflow has a chance to update anything it wants to.
+            //
             if ( survey.WorkflowTypeId.HasValue )
             {
                 var workflowType = WorkflowTypeCache.Get( survey.WorkflowTypeId.Value );
@@ -366,6 +368,11 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     ExceptionLogService.LogException( ex );
                 }
             }
+
+            //
+            // Generate the final results.
+            //
+            lResults.Text = survey.ResultTemplate.ResolveMergeFields( mergeFields );
         }
 
         #endregion
