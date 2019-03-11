@@ -287,6 +287,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             cbIsActive.Checked = survey.IsActive;
             cbIsLoginRequired.Checked = survey.IsLoginRequired;
             cpCategory.SetValue( survey.CategoryId );
+            wtpWorkflow.SetValue( survey.WorkflowTypeId );
             cbRecordAnswers.Checked = survey.RecordAnswers;
             ddlLastAttemptDateAttribute.SetValue( survey.LastAttemptDateAttributeId );
             ceInstructionTemplate.Text = survey.InstructionTemplate;
@@ -381,6 +382,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             survey.IsActive = cbIsActive.Checked;
             survey.IsLoginRequired = cbIsLoginRequired.Checked;
             survey.CategoryId = cpCategory.SelectedValueAsId();
+            survey.WorkflowTypeId = wtpWorkflow.SelectedValueAsId();
             survey.RecordAnswers = cbRecordAnswers.Checked;
             survey.LastAttemptDateAttributeId = ddlLastAttemptDateAttribute.SelectedValueAsInt();
             survey.InstructionTemplate = ceInstructionTemplate.Text;

@@ -216,7 +216,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             var rockContext = new RockContext();
             var survey = new SurveyService( rockContext ).Get( GetSurveyId().Value );
             var surveyResultService = new SurveyResultService( rockContext );
-            var surveyResult = new SurveyResult { Id = 0, SurveyId = survey.Id };
+            var surveyResult = new SurveyResult { Id = 0, SurveyId = survey.Id, Survey = survey };
             var mergeFields = LavaHelper.GetCommonMergeFields( RockPage, CurrentPerson );
             var person = CurrentPerson != null ? new PersonService( rockContext ).Get( CurrentPerson.Id ) : null;
             var correctAnswers = new List<string>();
@@ -276,7 +276,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     }
                     else
                     {
-                            incorrectAnswers.Add( value.Key );
+                        incorrectAnswers.Add( value.Key );
                     }
                 }
 
@@ -334,6 +334,38 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     surveyResult.SaveAttributeValues( rockContext );
                 }
             } );
+
+            if ( survey.WorkflowTypeId.HasValue )
+            {
+                var workflowType = WorkflowTypeCache.Get( survey.WorkflowTypeId.Value );
+                var workflowService = new WorkflowService( rockContext );
+
+                try
+                {
+                    string workflowName = survey.Name;
+
+                    if ( CurrentPerson != null )
+                    {
+                        workflowName += ": " + CurrentPerson.FullName;
+                    }
+
+                    var workflow = Workflow.Activate( workflowType, workflowName, rockContext );
+                    List<string> errorMessages;
+
+                    workflow.SetAttributeValue( "Survey", survey.Guid );
+                    workflow.SetAttributeValue( "CorrectAnswers", string.Join( ",", correctAnswers ) );
+                    workflow.SetAttributeValue( "IncorrectAnswers", string.Join( ",", incorrectAnswers ) );
+
+                    if ( !workflowService.Process( workflow, surveyResult, out errorMessages ) )
+                    {
+                        throw new Exception( "Failed to process workflow for survey." );
+                    }
+                }
+                catch ( Exception ex )
+                {
+                    ExceptionLogService.LogException( ex );
+                }
+            }
         }
 
         #endregion

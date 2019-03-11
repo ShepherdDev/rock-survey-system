@@ -70,6 +70,7 @@
     <Compile Include="Migrations\006_MoveSurveyResultDetail.cs" />
     <Compile Include="Migrations\007_AddIsLoginRequired.cs" />
     <Compile Include="Migrations\008_AddSurveyAttributeField.cs" />
+    <Compile Include="Migrations\009_AddSurveyWorkflow.cs" />
     <Compile Include="Model\Survey.cs" />
     <Compile Include="Model\SurveyResult.cs" />
     <Compile Include="Model\SurveyResultService.cs" />

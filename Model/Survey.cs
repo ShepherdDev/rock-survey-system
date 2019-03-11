@@ -94,6 +94,15 @@ namespace com.shepherdchurch.SurveySystem.Model
         [DataMember]
         public bool IsLoginRequired { get; set; }
 
+        /// <summary>
+        /// Gets or sets the workflow type identifier that will be executed when the survey is completed.
+        /// </summary>
+        /// <value>
+        /// The workflow type identifier that will be executed when the survey is completed.
+        /// </value>
+        [DataMember]
+        public int? WorkflowTypeId { get; set; }
+
         #endregion
 
         #region Virtual Properties
@@ -153,6 +162,15 @@ namespace com.shepherdchurch.SurveySystem.Model
             }
         }
 
+        /// <summary>
+        /// Gets or sets the workflow that will be executed when the survey is completed.
+        /// </summary>
+        /// <value>
+        /// The workflow that will be executed when the survey is completed.
+        /// </value>
+        [DataMember]
+        public virtual WorkflowType WorkflowType { get; set; }
+
         #endregion
 
         #region Methods
@@ -199,6 +217,11 @@ namespace com.shepherdchurch.SurveySystem.Model
             this.HasOptional( s => s.Category )
                 .WithMany()
                 .HasForeignKey( s => s.CategoryId )
+                .WillCascadeOnDelete( false );
+
+            this.HasOptional( s => s.WorkflowType )
+                .WithMany()
+                .HasForeignKey( s => s.WorkflowTypeId )
                 .WillCascadeOnDelete( false );
 
             this.HasEntitySetName( "Survey" );

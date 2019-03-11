@@ -87,6 +87,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <Rock:CategoryPicker ID="cpCategory" runat="server" Label="Category" Required="true" EntityTypeName="com.shepherdchurch.SurveySystem.Model.Survey" />
+                            <Rock:WorkflowTypePicker ID="wtpWorkflow" runat="server" Label="Workflow Type" Help="Launches the specified workflow when a survey has been completed." />
                         </div>
 
                         <div class="col-md-6">
