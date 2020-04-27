@@ -114,7 +114,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             //
             // Ensure the user is allowed to view this survey.
             //
-            if ( survey == null || !survey.IsAuthorized( Authorization.VIEW, CurrentPerson ) )
+            if ( survey == null || !survey.IsAuthorized( Authorization.VIEW, CurrentPerson ) || !survey.IsActive )
             {
                 nbUnauthorized.Text = "The survey was not found or has expired.";
                 pnlDetails.Visible = false;

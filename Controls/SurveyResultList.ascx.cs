@@ -338,7 +338,6 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             foreach ( var attributeModel in new AttributeService( new RockContext() ).Queryable()
                 .Where( a =>
                     a.EntityTypeId == entityTypeId &&
-                    //a.IsGridColumn &&
                     a.EntityTypeQualifierColumn.Equals( "SurveyId", StringComparison.OrdinalIgnoreCase ) &&
                     a.EntityTypeQualifierValue.Equals( typeQualifier ) )
                 .OrderByDescending( a => a.EntityTypeQualifierColumn )
