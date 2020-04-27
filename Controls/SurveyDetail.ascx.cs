@@ -245,6 +245,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             lbDelete.Visible = canEdit;
             lbEditAnswers.Visible = survey.PassingGrade.HasValue;
             btnSecurity.Visible = survey.IsAuthorized( Authorization.ADMINISTRATE, CurrentPerson );
+            lbRun.Visible = survey.IsActive;
 
             btnSecurity.Title = "Secure " + survey.Name;
             btnSecurity.EntityId = survey.Id;
