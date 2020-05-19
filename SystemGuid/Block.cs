@@ -26,6 +26,11 @@
         public const string SURVEY_RESULTS_SURVEY_RESULT_LIST = "AA7B78D9-B5E2-4358-BAD7-0B84700C831B";
 
         /// <summary>
+        /// Survey Result Charts block on the Charts page.
+        /// </summary>
+        public const string SURVEY_RESULTS_CHARTS_SURVEY_RESULT_CHARTS = "D357A55C-4108-45EA-830C-B809BCA22783";
+
+        /// <summary>
         /// Survey Result Detail on the Survey Result Details page.
         /// </summary>
         public const string SURVEY_RESULT_DETAILS_SURVEY_RESULT_DETAIL = "DB99CAC2-3B50-4E0B-B514-3F2243098279";

@@ -8,6 +8,9 @@
         <asp:Panel ID="pnlResultList" runat="server" CssClass="panel panel-block">
             <div class="panel-heading">
                 <h1 class="panel-title"><i class="fa fa-list-ul"></i> <asp:Literal ID="ltTitle" runat="server" /></h1>
+                <div class="pull-right">
+                    <a id="aChartLink" runat="server" class="btn btn-xs btn-default"><i class="fa fa-chart-pie"></i> View Charts</a>
+                </div>
             </div>
 
             <div class="panel-body">

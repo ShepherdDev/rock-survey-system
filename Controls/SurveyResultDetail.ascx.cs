@@ -4,18 +4,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI.WebControls;
 
+using com.shepherdchurch.SurveySystem.Model;
+
 using Rock;
-using Rock.Attribute;
 using Rock.Constants;
 using Rock.Data;
 using Rock.Model;
 using Rock.Security;
-using Rock.Web;
-using Rock.Web.Cache;
 using Rock.Web.UI;
 using Rock.Web.UI.Controls;
-
-using com.shepherdchurch.SurveySystem.Model;
 
 namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 {

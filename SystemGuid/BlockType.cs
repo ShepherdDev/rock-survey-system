@@ -26,6 +26,11 @@
         public const string SURVEY_RESULT_DETAIL = "33A8E039-33BA-49A5-984F-B439D75B8E82";
 
         /// <summary>
+        /// The survey result in charts.
+        /// </summary>
+        public const string SURVEY_RESULT_CHARTS = "728E8BA2-5A2C-4972-9E39-6BF26024B02D";
+
+        /// <summary>
         /// The Rock Category Tree View block.
         /// </summary>
         public const string ROCK_CATEGORY_TREE_VIEW = "ade003c7-649b-466a-872b-b8ac952e7841";

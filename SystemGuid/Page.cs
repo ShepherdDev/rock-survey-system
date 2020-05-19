@@ -21,6 +21,11 @@
         public const string SURVEY_RESULTS = "66CFD90E-1F12-4433-B056-282D77C7D4AE";
 
         /// <summary>
+        /// Admin Tools > Installed Plugins > Surveys > Survey Results > Charts
+        /// </summary>
+        public const string SURVEY_RESULTS_CHARTS = "68DCE355-6E9D-47C7-8744-355DEA2575F0";
+
+        /// <summary>
         /// Admin Tools > Installed Plugins > Surveys > Survey Results > Survey Result Details
         /// </summary>
         public const string SURVEY_RESULT_DETAILS = "EC642147-89DB-4088-A7A4-7F8CA8DA7D17";

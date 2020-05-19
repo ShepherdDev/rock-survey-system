@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
+using com.shepherdchurch.SurveySystem.Attribute;
+using com.shepherdchurch.SurveySystem.Model;
+
 using Newtonsoft.Json;
+
 using Rock;
 using Rock.Attribute;
 using Rock.Data;
@@ -12,10 +16,6 @@ using Rock.Model;
 using Rock.Security;
 using Rock.Web.Cache;
 using Rock.Web.UI;
-using Rock.Web.UI.Controls;
-
-using com.shepherdchurch.SurveySystem.Attribute;
-using com.shepherdchurch.SurveySystem.Model;
 
 namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 {

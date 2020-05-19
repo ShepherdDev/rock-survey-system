@@ -14,5 +14,10 @@
         /// Detail Page block setting for the Survey Result List block.
         /// </summary>
         public const string SURVEY_RESULT_LIST_DETAIL_PAGE = "B3D7DDE1-3939-4CD6-94C0-E879B3ACBBB2";
+
+        /// <summary>
+        /// Charts Page block setting for the Survey Result List block.
+        /// </summary>
+        public const string SURVEY_RESULT_LIST_CHARTS_PAGE = "8558AEE9-86A3-4CF5-90E8-752434608CFE";
     }
 }
