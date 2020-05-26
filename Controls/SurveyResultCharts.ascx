@@ -35,7 +35,7 @@
          * @param question The question to be displayed.
          */
         function setupQuestion(question) {
-            var $panel = $('<div class="panel panel-block"><div class="panel-heading"><h2 class="panel-title"></h2><div class="pull-right"><span class="label label-success"></span> <a href="#" class="btn btn-xs btn-default js-btn-chart-bar"><i class="fa fa-chart-bar"></i></a> <a href="#" class="btn btn-xs btn-default js-btn-chart-horizontal-bar"><i class="fa fa-chart-bar fa-rotate-90"></i></a> <a href="#" class="btn btn-xs btn-default js-btn-chart-pie"><i class="fa fa-chart-pie"></i></a></div></div><div class="panel-body"></div></div>');
+            var $panel = $('<div class="panel panel-block"><div class="panel-heading"><h2 class="panel-title"></h2><div class="pull-right" style="white-space: nowrap;"><span class="label label-success"></span> <a href="#" class="btn btn-xs btn-default js-btn-chart-bar"><i class="fa fa-chart-bar"></i></a> <a href="#" class="btn btn-xs btn-default js-btn-chart-horizontal-bar"><i class="fa fa-chart-bar fa-rotate-90"></i></a> <a href="#" class="btn btn-xs btn-default js-btn-chart-pie"><i class="fa fa-chart-pie"></i></a></div></div><div class="panel-body"></div></div>');
 
             $panel.find('.panel-title').text(question.title);
             if (question.passRate !== null) {
@@ -276,6 +276,7 @@
 
             var options = getBaseOptions();
             options.legend.display = true;
+            options.legend.position = 'left';
 
             $container.html('<canvas width="100%"></canvas>');
             $container.css('height', '300px');
