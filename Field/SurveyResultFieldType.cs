@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using com.shepherdchurch.SurveySystem.Model;
 using com.shepherdchurch.SurveySystem.UI;
 
 using Rock;
-using Rock.Constants;
 using Rock.Data;
 using Rock.Field;
-using Rock.Model;
 
 namespace com.shepherdchurch.SurveySystem.Field
 {
     /// <summary>
     /// Survey Field Type. Stored as Survey's Guid
     /// </summary>
-    public class SurveyFieldType : Rock.Field.FieldType, IEntityFieldType
+    public class SurveyResultFieldType : Rock.Field.FieldType, IEntityFieldType
     {
         #region Configuration
 
@@ -84,12 +80,19 @@ namespace com.shepherdchurch.SurveySystem.Field
             Guid? guid = value.AsGuidOrNull();
             if ( guid.HasValue )
             {
-                var service = new SurveyService( new RockContext() );
-                var survey = service.Get( guid.Value );
+                var service = new SurveyResultService( new RockContext() );
+                var result = service.Get( guid.Value );
 
-                if ( survey != null )
+                if ( result != null )
                 {
-                    formattedValue = survey.Name;
+                    if ( result.CreatedDateTime.HasValue )
+                    {
+                        formattedValue = $"{result.Survey.Name} result from {result.CreatedDateTime}";
+                    }
+                    else
+                    {
+                        formattedValue = $"{result.Survey.Name} result #{result.Id}";
+                    }
                 }
             }
 
@@ -110,30 +113,29 @@ namespace com.shepherdchurch.SurveySystem.Field
         /// </returns>
         public override Control EditControl( Dictionary<string, ConfigurationValue> configurationValues, string id )
         {
-            return new SurveyPicker { ID = id, AllowMultiSelect = false };
+            return new SurveySurveyResultPicker { ID = id };
         }
 
         /// <summary>
         /// Reads new values entered by the user for the field
-        /// returns Survey.Guid
+        /// returns SurveyResult.Guid
         /// </summary>
         /// <param name="control">Parent control that controls were added to in the CreateEditControl() method</param>
         /// <param name="configurationValues">The configuration values.</param>
         /// <returns></returns>
         public override string GetEditValue( Control control, Dictionary<string, ConfigurationValue> configurationValues )
         {
-            var picker = control as SurveyPicker;
-
-            if ( picker != null )
+            if ( control is SurveySurveyResultPicker picker )
             {
-                int? id = picker.SelectedValue.AsIntegerOrNull();
+                int? id = picker.SurveyResultId;
+
                 if ( id.HasValue )
                 {
-                    var survey = new SurveyService( new RockContext() ).Get( id.Value );
+                    var result = new SurveyResultService( new RockContext() ).Get( id.Value );
 
-                    if ( survey != null )
+                    if ( result != null )
                     {
-                        return survey.Guid.ToString();
+                        return result.Guid.ToString();
                     }
                 }
             }
@@ -150,15 +152,13 @@ namespace com.shepherdchurch.SurveySystem.Field
         /// <param name="value">The value.</param>
         public override void SetEditValue( Control control, Dictionary<string, ConfigurationValue> configurationValues, string value )
         {
-            var picker = control as SurveyPicker;
-
-            if ( picker != null )
+            if ( control is SurveySurveyResultPicker picker )
             {
                 Guid guid = value.AsGuid();
 
                 // get the item (or null) and set it
-                var survey = new SurveyService( new RockContext() ).Get( guid );
-                picker.SetValue( survey );
+                var survey = new SurveyResultService( new RockContext() ).Get( guid );
+                picker.SurveyResultId = survey?.Id;
             }
         }
 
@@ -175,7 +175,7 @@ namespace com.shepherdchurch.SurveySystem.Field
         public int? GetEditValueAsEntityId( Control control, Dictionary<string, ConfigurationValue> configurationValues )
         {
             Guid guid = GetEditValue( control, configurationValues ).AsGuid();
-            var item = new SurveyService( new RockContext() ).Get( guid );
+            var item = new SurveyResultService( new RockContext() ).Get( guid );
             return item != null ? item.Id : ( int? ) null;
         }
 
@@ -187,7 +187,7 @@ namespace com.shepherdchurch.SurveySystem.Field
         /// <param name="id">The identifier.</param>
         public void SetEditValueFromEntityId( Control control, Dictionary<string, ConfigurationValue> configurationValues, int? id )
         {
-            var item = new SurveyService( new RockContext() ).Get( id ?? 0 );
+            var item = new SurveyResultService( new RockContext() ).Get( id ?? 0 );
             string guidValue = item != null ? item.Guid.ToString() : string.Empty;
             SetEditValue( control, configurationValues, guidValue );
         }
@@ -214,7 +214,7 @@ namespace com.shepherdchurch.SurveySystem.Field
             if ( guid.HasValue )
             {
                 rockContext = rockContext ?? new RockContext();
-                return new SurveyService( rockContext ).Get( guid.Value );
+                return new SurveyResultService( rockContext ).Get( guid.Value );
             }
 
             return null;

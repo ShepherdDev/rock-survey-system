@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Attribute\SurveyFieldAttribute.cs" />
     <Compile Include="Field\SurveyFieldType.cs" />
+    <Compile Include="Field\SurveyResultFieldType.cs" />
     <Compile Include="Migrations\001_InstallSystemData.cs" />
     <Compile Include="Migrations\002_SetupPages.cs" />
     <Compile Include="Migrations\003_AddIsActive.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="SystemGuid\Layout.cs" />
     <Compile Include="SystemGuid\Page.cs" />
     <Compile Include="UI\SurveyPicker.cs" />
+    <Compile Include="UI\SurveySurveyResultPicker.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
