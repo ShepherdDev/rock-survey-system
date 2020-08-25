@@ -124,7 +124,9 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             //
             // Set all the simple field values.
             //
-            lCreatedBy.Text = result.CreatedByPersonAlias != null ? result.CreatedByPersonAlias.Person.FullName : string.Empty;
+            lCreatedBy.Text = result.CreatedByPersonAlias != null
+                ? string.Format( "<a href=\"/Person/{0}\">{1}</a>", result.CreatedByPersonAlias.PersonId, result.CreatedByPersonAlias.Person.FullName )
+                : string.Empty;
             lCreatedDate.Text = result.CreatedDateTime.HasValue ? result.CreatedDateTime.Value.ToShortDateString() + " " + result.CreatedDateTime.Value.ToShortTimeString() : string.Empty;
 
             if ( result.DidPass.HasValue )
