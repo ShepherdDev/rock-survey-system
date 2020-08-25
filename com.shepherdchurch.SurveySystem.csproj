@@ -73,6 +73,7 @@
     <Compile Include="Migrations\008_AddSurveyAttributeField.cs" />
     <Compile Include="Migrations\009_AddSurveyWorkflow.cs" />
     <Compile Include="Migrations\010_AddSurveyCharts.cs" />
+    <Compile Include="Migrations\011_EnablePrePostHtml.cs" />
     <Compile Include="Model\Survey.cs" />
     <Compile Include="Model\SurveyResult.cs" />
     <Compile Include="Model\SurveyResultService.cs" />
