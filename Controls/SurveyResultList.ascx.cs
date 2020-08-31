@@ -26,7 +26,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 
     [LinkedPage( "Detail Page", "The page that allows the user to view the details of a result.", false, "", "", 0 )]
     [LinkedPage( "Chart Page", "The page that allows the user to view the results with charts.", false, "", "", 1 )]
-    public partial class SurveyResultList : RockBlock
+    public partial class SurveyResultList : RockBlock, ICustomGridColumns
     {
         #region Private Fields
 
