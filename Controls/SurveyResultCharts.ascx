@@ -7,12 +7,21 @@
         <asp:Panel ID="pnlResults" runat="server">
             <h2><asp:Literal ID="ltTitle" runat="server" /></h2>
 
-            <Rock:DateRangePicker ID="drpDateCompleted" runat="server" Label="Completed Date" />
+            <Rock:AccordionPanel ID="pnlFilter" runat="server" Title="Filter" TitleIcon="fa fa-filter" Collapsed="true">
+                <Body>
+                    <asp:ValidationSummary ID="valSummary" runat="server" HeaderText="Please correct the following:" CssClass="alert alert-validation" />
 
-            <div style="margin-bottom: 20px;">
-                <asp:LinkButton ID="lbApplyFilter" runat="server" Text="Apply Filter" CssClass="btn btn-default" OnClick="lbApplyFilter_Click" />
-            </div>
+                    <Rock:DateRangePicker ID="drpDateCompleted" runat="server" Label="Completed Date" />
 
+                    <asp:PlaceHolder ID="phFilterControls" runat="server" />
+
+                    <div class="actions">
+                        <asp:LinkButton ID="btnSearch" runat="server" Text="Apply" CssClass="btn btn-primary" OnClick="lbApplyFilter_Click" />
+                        <asp:LinkButton ID="btnClear" runat="server" Text="Clear" CssClass="btn btn-link" OnClick="lbClearFilter_Click" />
+                    </div>
+                </Body>
+            </Rock:AccordionPanel>
+            
             <asp:HiddenField ID="hfData" runat="server" />
             <asp:HiddenField ID="hfMaxValues" runat="server" />
 

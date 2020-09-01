@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using com.shepherdchurch.SurveySystem.Model;
@@ -14,6 +15,7 @@ using Rock.Model;
 using Rock.Security;
 using Rock.Web.Cache;
 using Rock.Web.UI;
+using Rock.Web.UI.Controls;
 
 namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
 {
@@ -36,7 +38,32 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             FieldTypeCache.GetId( Rock.SystemGuid.FieldType.SINGLE_SELECT.AsGuid() ).Value
         };
 
+        /// <summary>
+        /// Gets or sets the attribute filters.
+        /// </summary>
+        /// <value>
+        /// The attribute filters.
+        /// </value>
+        public List<AttributeCache> AttributeFilters { get; set; }
+
         #region Base Method Overrides
+
+        /// <summary>
+        /// Restores the view-state information from a previous user control request that was saved by the <see cref="M:System.Web.UI.UserControl.SaveViewState" /> method.
+        /// </summary>
+        /// <param name="savedState">An <see cref="T:System.Object" /> that represents the user control state to be restored.</param>
+        protected override void LoadViewState( object savedState )
+        {
+            base.LoadViewState( savedState );
+
+            var attributeIds = ViewState["AttributeFilters"] as List<int>;
+            AttributeFilters = attributeIds
+                .Select( a => AttributeCache.Get( a ) )
+                .Where( a => a != null )
+                .ToList();
+
+            BuildDynamicControls();
+        }
 
         /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init" /> event.
@@ -58,12 +85,30 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         /// </summary>
         /// <param name="sender">Object that is generating this event.</param>
         /// <param name="e">Arguments that describe this event.</param>
-        protected void Page_Load( object sender, EventArgs e )
+        protected override void OnLoad( EventArgs e )
         {
+            base.OnLoad( e );
+
             if ( !IsPostBack )
             {
+                BindAttributes();
+                BuildDynamicControls();
+
                 ShowDetails();
             }
+        }
+
+        /// <summary>
+        /// Saves any user control view-state changes that have occurred since the last page postback.
+        /// </summary>
+        /// <returns>
+        /// Returns the user control's current view state. If there is no view state associated with the control, it returns null.
+        /// </returns>
+        protected override object SaveViewState()
+        {
+            ViewState["AttributeFilters"] = AttributeFilters.Select( a => a.Id ).ToList();
+
+            return base.SaveViewState();
         }
 
         #endregion
@@ -106,6 +151,22 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 DateTime upperDate = drpDateCompleted.UpperValue.Value.Date.AddDays( 1 );
                 qry = qry.Where( p => p.CreatedDateTime < upperDate );
             }
+
+            // Filter query by any configured attribute filters
+            var preAttributeQry = qry;
+            if ( AttributeFilters != null && AttributeFilters.Any() )
+            {
+                foreach ( var attribute in AttributeFilters )
+                {
+                    var filterControl = phFilterControls.FindControl( "filter_" + attribute.Id.ToString() );
+                    var filterValues = attribute.FieldType.Field.GetFilterValues( filterControl, attribute.QualifierValues, Rock.Reporting.FilterMode.SimpleFilter );
+                    if ( filterValues.Count > 0 && filterValues[filterValues.Count >= 2 ? 1 : 0].IsNotNullOrWhiteSpace() )
+                    {
+                        qry = attribute.FieldType.Field.ApplyAttributeQueryFilter( qry, filterControl, attribute, surveyResultService, Rock.Reporting.FilterMode.SimpleFilter );
+                    }
+                }
+            }
+            pnlFilter.CssClass = qry != preAttributeQry ? "panel panel-info" : "panel panel-widget";
 
             //
             // Store the queried objects in the grid for it to use later.
@@ -189,6 +250,73 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             }
         }
 
+        /// <summary>
+        /// Adds the attribute filters.
+        /// </summary>
+        private void BindAttributes()
+        {
+            int surveyId = PageParameter( "SurveyId" ).AsInteger();
+
+            var tempResult = new SurveyResult
+            {
+                SurveyId = surveyId
+            };
+            tempResult.LoadAttributes();
+            AttributeFilters = tempResult.Attributes
+                .Values
+                .Where( a => a.FieldType.Field.HasFilterControl() )
+                .OrderBy( a => a.Order )
+                .ThenBy( a => a.Key )
+                .ToList();
+        }
+
+        /// <summary>
+        /// Builds the dynamic controls.
+        /// </summary>
+        private void BuildDynamicControls()
+        {
+            phFilterControls.Controls.Clear();
+
+            if ( AttributeFilters != null )
+            {
+                foreach ( var attribute in AttributeFilters )
+                {
+                    var control = attribute.FieldType.Field.FilterControl( attribute.QualifierValues, "filter_" + attribute.Id.ToString(), false, Rock.Reporting.FilterMode.SimpleFilter );
+                    if ( control != null )
+                    {
+                        AddFilterControl( control, attribute.Name, attribute.Description );
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the filter control to the view.
+        /// </summary>
+        /// <param name="control">The control to be added.</param>
+        /// <param name="name">The name of the control.</param>
+        /// <param name="description">The help text of the control.</param>
+        private void AddFilterControl( Control control, string name, string description )
+        {
+            if ( control is IRockControl )
+            {
+                var rockControl = ( IRockControl ) control;
+                rockControl.Label = name;
+                rockControl.Help = description;
+                phFilterControls.Controls.Add( control );
+            }
+            else
+            {
+                var wrapper = new RockControlWrapper
+                {
+                    ID = control.ID + "_wrapper",
+                    Label = name
+                };
+                wrapper.Controls.Add( control );
+                phFilterControls.Controls.Add( wrapper );
+            }
+        }
+
         #endregion
 
         #region Event Handlers
@@ -210,6 +338,19 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void lbApplyFilter_Click( object sender, EventArgs e )
         {
+            ShowDetails();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lbClearFilter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void lbClearFilter_Click( object sender, EventArgs e )
+        {
+            drpDateCompleted.DelimitedValues = null;
+            BuildDynamicControls();
+
             ShowDetails();
         }
 
