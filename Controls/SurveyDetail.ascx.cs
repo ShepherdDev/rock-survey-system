@@ -25,6 +25,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
     [Description( "Displays the details for a survey." )]
 
     [LinkedPage( "Results Page", "The page that is used to list results for this survey.", false, order: 0 )]
+    [BooleanField( "Record Answers Default", "The default value for Record Answers option when a user creates a new survey.", false, order: 1 )]
     public partial class SurveyDetail : RockBlock
     {
         #region Private Fields
@@ -123,7 +124,12 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     hfId.Value = PageParameter( "SurveyId" );
                     if ( hfId.Value.AsInteger() == 0 )
                     {
-                        var survey = new Survey { Id = 0, IsActive = true };
+                        var survey = new Survey
+                        {
+                            Id = 0,
+                            IsActive = true,
+                            RecordAnswers = GetAttributeValue( "RecordAnswersDefault" ).AsBoolean( resultIfNullOrEmpty: false )
+                        };
                         survey.CategoryId = PageParameter( "ParentCategoryId" ).AsIntegerOrNull();
 
                         LoadAttributeState( survey );
