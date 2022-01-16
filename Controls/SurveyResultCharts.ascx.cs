@@ -244,6 +244,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                     .Select( v => v.Value )
                     .ToList();
             }
+            else if ( attribute.FieldType.Guid == Rock.SystemGuid.FieldType.RATING.AsGuid() )
+            {
+                return new[] { rawValue };
+            }
             else
             {
                 return new[] { attribute.FieldType.Field.FormatValue( this, rawValue, attribute.QualifierValues, false ) };
