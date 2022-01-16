@@ -41,7 +41,7 @@
                 <Rock:Grid ID="gAttributes" runat="server" CssClass="margin-b-md" AllowSorting="false" ShowActionRow="false" AllowPaging="false">
                     <Columns>
                         <Rock:RockBoundField DataField="Key" HeaderText="Question" />
-                        <Rock:RockBoundField DataField="Value" HeaderText="Response" />
+                        <Rock:RockBoundField DataField="Value" HeaderText="Response" HtmlEncode="false" />
                         <Rock:RockBoundField DataField="Answer" HeaderText="Answer" />
                         <Rock:RockBoundField DataField="IsCorrect" HtmlEncode="false" HeaderText="Is Correct" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" />
                     </Columns>
