@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 using System.Runtime.Serialization;
 
 using Rock.Data;
+using Rock.Lava;
 using Rock.Security;
 
 namespace com.shepherdchurch.SurveySystem.Model
@@ -39,7 +40,7 @@ namespace com.shepherdchurch.SurveySystem.Model
         /// <summary>
         /// Gets or sets the <see cref="Survey"/>.
         /// </summary>
-        [LavaInclude]
+        [LavaVisible]
         public virtual Survey Survey { get; set; }
 
         /// <summary>

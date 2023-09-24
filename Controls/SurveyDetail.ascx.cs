@@ -81,6 +81,9 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             {
                 lbResults.Visible = !string.IsNullOrWhiteSpace( GetAttributeValue( "ResultsPage" ) );
 
+                dvMustBeIn.EntityTypeId = EntityTypeCache.GetId<Person>();
+                dvMustNotBeIn.EntityTypeId = EntityTypeCache.GetId<Person>();
+
                 ddlLastAttemptDateAttribute.Items.Clear();
                 ddlLastPassedDateAttribute.Items.Clear();
 
@@ -299,6 +302,10 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             ceInstructionTemplate.Text = survey.InstructionTemplate;
             ceResultTemplate.Text = survey.ResultTemplate;
 
+            pnlDataViews.Visible = cbIsLoginRequired.Checked;
+            dvMustBeIn.SetValue( survey.MustBeInDataViewId );
+            dvMustNotBeIn.SetValue( survey.MustNotBeInDataViewId );
+
             cbPassFail.Checked = survey.PassingGrade.HasValue;
             pnlPassFail.Visible = survey.PassingGrade.HasValue;
             if ( survey.PassingGrade.HasValue )
@@ -388,6 +395,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             survey.IsActive = cbIsActive.Checked;
             survey.IsLoginRequired = cbIsLoginRequired.Checked;
             survey.CategoryId = cpCategory.SelectedValueAsId();
+            survey.MustBeInDataViewId = dvMustBeIn.SelectedValueAsId();
+            survey.MustNotBeInDataViewId = dvMustNotBeIn.SelectedValueAsId();
             survey.WorkflowTypeId = wtpWorkflow.SelectedValueAsId();
             survey.RecordAnswers = cbRecordAnswers.Checked;
             survey.LastAttemptDateAttributeId = ddlLastAttemptDateAttribute.SelectedValueAsInt();
@@ -544,6 +553,16 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
         protected void cbPassFail_CheckedChanged( object sender, EventArgs e )
         {
             pnlPassFail.Visible = cbPassFail.Checked;
+        }
+
+        /// <summary>
+        /// Handles the CheckedChanges event of the control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void cbIsLoginRequired_CheckedChanged( object sender, EventArgs e )
+        {
+            pnlDataViews.Visible = cbIsLoginRequired.Checked;
         }
 
         /// <summary>

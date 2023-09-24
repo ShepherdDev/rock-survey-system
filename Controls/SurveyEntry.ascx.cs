@@ -141,6 +141,42 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 return;
             }
 
+            //
+            // Ensure the user matches the proper data views.
+            //
+            if ( survey.IsLoginRequired )
+            {
+                if ( survey.MustBeInDataViewId.HasValue )
+                {
+                    var qry = survey.MustBeInDataView.GetQuery( new DataViewGetQueryArgs
+                    {
+                        DbContext = rockContext
+                    } );
+
+                    if ( !qry.Where( p => p.Id == CurrentPersonId.Value ).Any() )
+                    {
+                        nbUnauthorized.Text = "The survey is not valid for you to take at this time.";
+                        pnlDetails.Visible = false;
+                        return;
+                    }
+                }
+
+                if ( survey.MustNotBeInDataViewId.HasValue )
+                {
+                    var qry = survey.MustNotBeInDataView.GetQuery( new DataViewGetQueryArgs
+                    {
+                        DbContext = rockContext
+                    } );
+
+                    if ( qry.Where( p => p.Id == CurrentPersonId.Value ).Any() )
+                    {
+                        nbUnauthorized.Text = "The survey is not valid for you to take at this time.";
+                        pnlDetails.Visible = false;
+                        return;
+                    }
+                }
+            }
+
             nbUnauthorized.Text = string.Empty;
             pnlDetails.Visible = true;
 

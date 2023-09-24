@@ -73,7 +73,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <Rock:DataTextBox ID="tbName" runat="server" SourceTypeName="com.shepherdchurch.SurveySystem.Model.Survey, com.shepherdchurch.SurveySystem" PropertyName="Name" />
-                            <Rock:RockCheckBox ID="cbIsLoginRequired" runat="server" Label="Is Login Required" Help="Turn on to require a person to be logged in to take the survey." />
+                            <Rock:RockCheckBox ID="cbIsLoginRequired" runat="server" Label="Is Login Required" Help="Turn on to require a person to be logged in to take the survey." OnCheckedChanged="cbIsLoginRequired_CheckedChanged" AutoPostBack="true" CausesValidation="false" />
                         </div>
 
                         <div class="col-md-6">
@@ -83,6 +83,16 @@
                     </div>
 
                     <Rock:RockTextBox ID="tbDescription" runat="server" TextMode="MultiLine" Rows="5" Label="Description" />
+
+                    <asp:Panel ID="pnlDataViews" runat="server" CssClass="row">
+                        <div class="col-md-6">
+                            <Rock:DataViewItemPicker ID="dvMustBeIn" runat="server" Label="Must Be In Data View" Help="If selected, the logged in person must be a member of this data view in order to take the survey." />
+                        </div>
+
+                        <div class="col-md-6">
+                            <Rock:DataViewItemPicker ID="dvMustNotBeIn" runat="server" Label="Must Not Be In Data View" Help="If selected, the logged in person must not be a member of this data view in order to take the survey." />
+                        </div>
+                    </asp:Panel>
 
                     <div class="row">
                         <div class="col-md-6">

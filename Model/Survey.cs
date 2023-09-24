@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 using Rock.Data;
+using Rock.Lava;
 using Rock.Model;
 using Rock.Security;
 
@@ -103,6 +104,24 @@ namespace com.shepherdchurch.SurveySystem.Model
         [DataMember]
         public int? WorkflowTypeId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the data view identifier that the individual must exist in.
+        /// Only valid if <see cref="IsLoginRequired"/> is <c>true</c>.
+        /// </summary>
+        /// <value>
+        /// The data view identifier that the individual must exist in.
+        /// </value>
+        public int? MustBeInDataViewId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data view identifier that the individual must not exist in.
+        /// Only valid if <see cref="IsLoginRequired"/> is <c>true</c>.
+        /// </summary>
+        /// <value>
+        /// The data view identifier that the individual must not exist in.
+        /// </value>
+        public int? MustNotBeInDataViewId { get; set; }
+
         #endregion
 
         #region Virtual Properties
@@ -110,7 +129,7 @@ namespace com.shepherdchurch.SurveySystem.Model
         /// <summary>
         /// Gets or sets the <see cref="Rock.Model.Category"/>.
         /// </summary>
-        [LavaInclude]
+        [LavaVisible]
         public virtual Category Category { get; set; }
 
         /// <summary>
@@ -127,7 +146,7 @@ namespace com.shepherdchurch.SurveySystem.Model
         /// <summary>
         /// Gets or the Answers dictionary, can be used by Lava to display correct answer information.
         /// </summary>
-        [LavaInclude]
+        [LavaVisible]
         public virtual IDictionary<string, string> Answers
         {
             get
@@ -170,6 +189,24 @@ namespace com.shepherdchurch.SurveySystem.Model
         /// </value>
         [DataMember]
         public virtual WorkflowType WorkflowType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data view that the individual must exist in.
+        /// </summary>
+        /// <value>
+        /// The data view that the individual must exist in.
+        /// </value>
+        [DataMember]
+        public virtual DataView MustBeInDataView { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data view that the individual must not exist in.
+        /// </summary>
+        /// <value>
+        /// The data view that the individual must not exist in.
+        /// </value>
+        [DataMember]
+        public virtual DataView MustNotBeInDataView { get; set; }
 
         #endregion
 
