@@ -531,6 +531,8 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
             var survey = surveyService.Get( hfId.Value.AsInteger() );
             int? categoryId = survey.CategoryId;
 
+            surveyService.Delete( survey );
+
             rockContext.SaveChanges();
 
             mdlConfirmDelete.Hide();
