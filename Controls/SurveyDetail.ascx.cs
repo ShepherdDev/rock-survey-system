@@ -354,7 +354,7 @@ namespace RockWeb.Plugins.com_shepherdchurch.SurveySystem
                 Rock.Attribute.Helper.SaveAttributeEdits( attr, entityTypeId, qualifierColumn, qualifierValue, rockContext );
             }
 
-            AttributeCache.RemoveEntityAttributes();
+            EntityTypeAttributesCache.Clear();
         }
 
         #endregion
